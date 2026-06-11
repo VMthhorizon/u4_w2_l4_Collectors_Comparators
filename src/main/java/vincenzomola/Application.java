@@ -138,5 +138,21 @@ public class Application {
                 .average();
 //        if (totalAverage.isPresent()) System.out.println(totalAverage);
 //        else System.out.println("MEDIA NON CALCOLABILE");
+
+        // ESERCIZIO 5 **************************************************************************
+
+        // CONTROLLO in quanto
+
+//        List<Product> onlyBoys = prodotti.stream()
+//                .filter(product -> product.getCategory()
+//                        .equals(Category.BOYS))
+//                .toList();
+//        System.out.println(onlyBoys);
+
+        Map<Category, Double> categoryPrice = prodotti.stream()
+                .collect(Collectors.groupingBy(Product::getCategory, Collectors.summingDouble(Product::getPrice)));
+
+        categoryPrice.forEach((categoria, somma) -> System.out.println(categoria + ": " + somma + " Euro"));
+
     }
 }
