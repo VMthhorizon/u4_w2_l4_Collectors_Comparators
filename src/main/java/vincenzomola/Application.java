@@ -7,9 +7,7 @@ import vincenzomola.enums.Category;
 import vincenzomola.enums.Status;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Application {
@@ -117,10 +115,28 @@ public class Application {
         // ESERCIZIO 2 ******************************************************************************
 
         Map<Customer, Double> customerSpesaTotale = ordini.stream()
-                .collect(Collectors.groupingBy(Order::getCustomer, Collectors.summingDouble(Order::calculateTotal)));
-        customerSpesaTotale.forEach(
-                (cliente, spesaTotale) -> System.out.println(cliente + "Spesa Totale: " + spesaTotale));
-        
+                .collect(Collectors.groupingBy(Order::getCustomer, Collectors.summingDouble(order -> order.getProducts()
+                        .stream()
+                        .mapToDouble(Product::getPrice)
+                        .sum())));
+//        customerSpesaTotale.forEach(
+//                (cliente, spesaTotale) -> System.out.println(cliente + "Spesa Totale: " + spesaTotale));
 
+
+        // ESERCIZIO 3 **************************************************************************
+
+        List<Product> expensiveProduct = prodotti.stream()
+                .sorted(Comparator.comparing(Product::getPrice)
+                        .reversed())
+                .toList();
+//        System.out.println(expensiveProduct);
+
+        // ESERCIZIO 4 **************************************************************************
+
+        OptionalDouble totalAverage = ordini.stream()
+                .mapToDouble(Order::calculateTotal)
+                .average();
+//        if (totalAverage.isPresent()) System.out.println(totalAverage);
+//        else System.out.println("MEDIA NON CALCOLABILE");
     }
 }
